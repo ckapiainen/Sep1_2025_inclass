@@ -2,13 +2,12 @@ pipeline {
     agent any
     tools{
         maven 'Maven3'
-
     }
 
     environment {
         PATH = "C:\\Program Files\\Docker\\Docker\\resources\\bin;${env.PATH}"
-        DOCKERHUB_CREDENTIALS_ID = 'Docker_Hub'
-        DOCKER_IMAGE = 'amirdirin/javafx_with_db2'
+        DOCKERHUB_CREDENTIALS_ID = 'docker'
+        DOCKER_IMAGE = 'ckapiainen/inclass_assignments'
         DOCKER_TAG = 'latest'
     }
 
@@ -24,7 +23,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/ADirin/javafx_with_mariadb.git'
+                git branch: 'main', url: 'https://github.com/ckapiainen/Sep1_2025_inclass.git'
             }
         }
 
@@ -75,12 +74,10 @@ pipeline {
         }
     }
 
-  post {
-    always {
-        junit(testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true)
-        jacoco(execPattern: '**/target/jacoco.exec', classPattern: '**/target/classes', sourcePattern: '**/src/main/java', inclusionPattern: '**/*.class', exclusionPattern: '')
+    post {
+        always {
+            junit(testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true)
+            jacoco(execPattern: '**/target/jacoco.exec', classPattern: '**/target/classes', sourcePattern: '**/src/main/java', inclusionPattern: '**/*.class', exclusionPattern: '')
+        }
     }
-}
-
-
 }
